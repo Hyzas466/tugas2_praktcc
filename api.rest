@@ -1,0 +1,29 @@
+### Create Note
+POST http://localhost:5000/api/notes
+Content-Type: application/json
+
+{
+    "judul": "Tugas Cloud Computing",
+    "isi": "Mengerjakan tugas praktikum untuk membuat REST API dengan Express dan Sequelize."
+}
+
+###
+
+### Get All Notes
+GET http://localhost:5000/api/notes
+
+###
+
+### Update Note (Ganti ID sesuai dengan ID Note yang ada di database)
+PUT http://localhost:5000/api/notes/1
+Content-Type: application/json
+
+{
+    "judul": "Tugas TCC (Updated)",
+    "isi": "Menambahkan endpoint validasi lewat file REST."
+}
+
+###
+
+### Delete Note (Ganti ID sesuai dengan ID Note yang ingin dihapus)
+DELETE http://localhost:5000/api/notes/1
