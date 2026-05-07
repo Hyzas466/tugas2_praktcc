@@ -4,24 +4,30 @@ require('dotenv').config();
 
 const sequelize = require('./config/database');
 const notesRoutes = require('./routes/notesRoutes');
-require('./schema/Note'); // Import the schema for Sequelize sync
+require('./schema/Note');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+// Pastikan mengambil PORT dari environment, default ke 5000 jika di lokal ingin sama dengan Cloud Run
+const PORT = process.env.PORT || 5000; 
 
 // Middleware
 app.use(cors({}));
-app.use(express.json()); // Agar bisa menerima format JSON dari body request
+app.use(express.json());
 
 // Routes
 app.use('/api', notesRoutes);
 
-// Sync Database dan Jalankan Server
-sequelize.sync().then(() => {
-    console.log("Database synced dengan Sequelize");
-    app.listen(PORT, () => {
-        console.log(`Server berjalan secara lokal di http://localhost:${PORT}`);
-    });
-}).catch(err => {
-    console.error("Gagal melakukan sinkronisasi database:", err);
+// Health Check (Penting untuk Cloud Run)
+app.get('/', (req, res) => {
+    res.status(200).send('Server is alive!');
+});
+
+// Jalankan Server DULU agar Cloud Run tidak timeout
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server berjalan di port ${PORT}`);
+    
+    // Baru jalankan sinkronisasi database di latar belakang
+    sequelize.sync()
+        .then(() => console.log("Database synced"))
+        .catch(err => console.error("Database sync failed:", err));
 });
