@@ -1,5 +1,5 @@
 // URL Backend API
-const API_URL = 'http://localhost:5000/api/notes';
+const API_URL = 'https://be-tugas3-tcc-198-197602084390.us-central1.run.app/api/notes';
 
 // Referensi elemen DOM
 const noteForm = document.getElementById('note-form');
